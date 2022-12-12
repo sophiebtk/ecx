@@ -3,8 +3,6 @@
 library(estimatr)
 library(dplyr)
 
-rm(list = ls())
-
 setwd("C:/Users/sophi.LAPTOP-O5LENC3P/Desktop/R")
 wage_data <- read.csv("lwage.csv")
 
@@ -19,7 +17,6 @@ summary(reg_b)
 # c) ???
 reg_c <- lm_robust(lwage ~ educ + exper + educ*exper, data = wage_data, se_type = "HC3")
 summary(reg_c)
-
 
 
 wage_data <- wage_data %>% mutate(exper10 = exper - 10)
