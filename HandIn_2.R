@@ -36,4 +36,3 @@ reg_e <- lm_robust(lwage ~ educ + exper + married_urban + married_rural + nonmar
 summary(reg_e)
 
 # f)
-
