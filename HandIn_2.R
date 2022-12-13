@@ -7,7 +7,7 @@ setwd("C:/Users/sophi.LAPTOP-O5LENC3P/Desktop/R")
 wage_data <- read.csv("lwage.csv")
 
 # a)
-reg_a <- lm_robust(lwage ~ educ + exper, wage_data, alpha = 0.05)
+reg_a <- lm_robust(lwage ~ educ + exper, data = wage_data, alpha = 0.05)
 summary(reg_a)
 
 # b)
@@ -24,7 +24,6 @@ wage_data <- wage_data %>% mutate(exper10 = exper - 10)
 reg_c1 <- lm_robust(lwage ~ educ + exper + educ*exper10, data = wage_data, se_type = "HC3")
 summary(reg_c1)
 
-
 # e)
 wage_data <- wage_data %>% mutate(married_urban = married*urban,
                                   nonmarried_urban = (1-married)*urban,
@@ -36,3 +35,9 @@ reg_e <- lm_robust(lwage ~ educ + exper + married_urban + married_rural + nonmar
 summary(reg_e)
 
 # f)
+reg_f <- lm_robust(lwage ~ educ + exper + married + urban + meduc + feduc, data = wage_data, se_type = "HC3")
+summary(reg_f)
+
+reg_f_restricted <- lm_robust(lwage ~ educ + exper + married + urban, data = wage_data, se_type = "HC3")
+summary(reg_f_restricted)
+
