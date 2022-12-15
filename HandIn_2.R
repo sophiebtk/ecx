@@ -2,26 +2,29 @@
 
 library(estimatr)
 library(dplyr)
+library(car)
 
 setwd("C:/Users/sophi.LAPTOP-O5LENC3P/Desktop/R")
 wage_data <- read.csv("lwage.csv")
 
 # a)
-reg_a <- lm_robust(lwage ~ educ + exper, data = wage_data, alpha = 0.05)
+reg_a <- lm_robust(lwage ~ educ + exper, data = wage_data, alpha = 0.02)
 summary(reg_a)
 
+reg_a <- lm_robust(lwage ~ educ + exper, data = wage_data, alpha = 0.05)
+summary(reg_a)
+reg_a <- lm(lwage ~ educ + exper, data = wage_data, alpha = 0.05)
+summary(reg_a)
 # b)
-reg_b <- lm_robust(lwage ~ educ + exper, data = wage_data, se_type = "HC3")
+reg_b <- lm_robust(lwage ~ educ + exper, data = wage_data, se_type = "HC3", alpha = 0.02)
 summary(reg_b)
 
-# c) ???
-reg_c <- lm_robust(lwage ~ educ + exper + educ*exper, data = wage_data, se_type = "HC3")
-summary(reg_c)
+reg_b <- lm_robust(lwage ~ educ + exper, data = wage_data, se_type = "HC3", alpha = 0.05)
+summary(reg_b)
+# c)
+wage_data <- wage_data %>% mutate(educ_exper10 = educ*(exper - 10))
 
-
-wage_data <- wage_data %>% mutate(exper10 = exper - 10)
-
-reg_c1 <- lm_robust(lwage ~ educ + exper + educ*exper10, data = wage_data, se_type = "HC3")
+reg_c1 <- lm_robust(lwage ~ educ + exper + educ_exper10, data = wage_data, se_type = "HC3")
 summary(reg_c1)
 
 # e)
@@ -35,9 +38,8 @@ reg_e <- lm_robust(lwage ~ educ + exper + married_urban + married_rural + nonmar
 summary(reg_e)
 
 # f)
-reg_f <- lm_robust(lwage ~ educ + exper + married + urban + meduc + feduc, data = wage_data, se_type = "HC3")
-summary(reg_f)
+reg_super_great_final_function <- lm_robust(lwage ~ educ + exper + married + urban + meduc + feduc, data = wage_data, se_type = "HC3")
+summary(reg_super_great_final_function)
 
-reg_f_restricted <- lm_robust(lwage ~ educ + exper + married + urban, data = wage_data, se_type = "HC3")
-summary(reg_f_restricted)
+linearHypothesis(reg_super_great_final_function, c("meduc=0", "feduc = 0"), test=c("F"))
 
